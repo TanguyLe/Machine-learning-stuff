@@ -1,9 +1,6 @@
 from six.moves import cPickle as pickle
 import os
 
-base_path = "C:\\Users\\leflo\\Documents\\projects\\machine_learning_stuff\\"
-model_file = base_path + "model.pickle"
-
 
 class modelStore:
     def __init__(self, file=os.getcwd() + "\\model.pickle"):
