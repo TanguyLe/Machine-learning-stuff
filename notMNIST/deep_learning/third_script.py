@@ -85,10 +85,18 @@ def accuracy(predictions, labels):
 
 with tf.Session(graph=graph) as session:
     tf.global_variables_initializer().run()
-    saver = tf.train.Saver({"weights1": weights1, "biases1": biases1, "weights2": weights2, "biases2": biases2})
-    saver.restore(session, "./tmp/model-2-12000")
-
-    predictions = session.run([training_prediction])
+    # saver = tf.train.Saver({"weights1": weights1, "biases1": biases1, "weights2": weights2, "biases2": biases2})
+    # saver.restore(session, "./tmp/model-2-12000")
+    print('Initialized')
+    for step in range(num_steps):
+        _, l, predictions = session.run([training_prediction])
+        if step % 100 == 0:
+            print('Loss at step %d: %f' % (step, l))
+            print('Training accuracy: %.1f%%' % accuracy(predictions, training_labels[:training_subset, :]))
+            # Calling .eval() on valid_prediction is basically like calling run(), but
+            # just to get that one numpy array. Note that it recomputes all its graph
+            # dependencies.
+            print('Validation accuracy: %.1f%%' % accuracy(valid_prediction.eval(), valid_labels))
 
     print("Validation accuracy: %.1f%%" % accuracy(valid_prediction.eval(), valid_labels))
     print("Test accuracy: %.1f%%" % accuracy(test_prediction.eval(), test_labels))
